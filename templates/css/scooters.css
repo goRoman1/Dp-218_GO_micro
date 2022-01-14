@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+.custom-table {
+    min-width: 800px;
+}
+
+.custom-table thead th {
+    border-top: none;
+    border-bottom: none;
+    color: #000000;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+}
+
+.custom-table tbody td {
+    padding-top: 20px;
+    font-weight: 300;
+    border: none;
+}
+
+.custom-table tbody td .details {
+    color: #777;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .2rem;
+}
+
+.custom-table tbody tr:hover td .details {
+    color: #cf3301;
+}
+
+.scooter-btn {
+    background-color: transparent !important;
+    border-color: rgba(117, 190, 218, 0.0);
+    text-transform: uppercase;
+}

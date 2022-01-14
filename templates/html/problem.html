@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="/templates/img/favicon.png">
+    <title>Problem info</title>
+</head>
+<body>
+<header>
+    <div class="bs-component">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+             style="background-color:#545454FF !important; padding: 1em !important;">
+            <i class="fas fa-bicycle fa-2x"></i>
+            &nbsp;
+            <b><a class="navbar-brand" href="/">Dnepr Scooters</a></b>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/problems">Problem list</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Back to profile</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<div class="bs-component">
+    <div class="jumbotron">
+        <h2 class="display-5">Problem {{.ID}}&nbsp;&nbsp;{{.DateReported}}</h2>
+        <hr class="my-4">
+        <p class="lead">User reported:&nbsp;&nbsp;<a href="mailto:{{.User.LoginEmail}}" target="_blank" class="btn btn-link">{{.User.UserName}}&nbsp;{{.User.UserSurname}}</a></p>
+        <p class="lead">Problem type:&nbsp;&nbsp;{{.Type.Name}}</p>
+        <hr class="my-4">
+        <h3>Description</h3>
+        <div class="alert alert-dismissible alert-info">
+            <p class="lead">{{.Description}}</p>
+        </div>
+    </div>
+
+    {{if .IsSolved}}
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Problem solved!</strong> You can view solution by clicking on the button.
+    </div>
+    {{else}}
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>No solution provided!</strong> Provide solution below.
+    </div>
+    {{end}}
+</div>
+
+{{if .IsSolved}}
+<button type="button" class="btn btn-secondary" onclick="window.location.href='/problem/{{.ID}}/solution'">View solution
+</button>
+{{else}}
+<form method="post" action="/problem/{{.ID}}/solution">
+    <div class="alert alert-dismissible alert-warning">
+        <h4 class="alert-heading">Solution</h4>
+        <div class="col-sm-7">
+            <textarea class="form-control" id="SolutionDescription" name = "Description" rows="5"></textarea>
+        </div>
+    </div>
+    <input type="hidden" name = "ProblemID" value="{{.ID}}">
+    <button type="submit" class="btn btn-primary">Provide solution</button>
+</form>
+{{end}}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+            crossorigin="anonymous"></script>
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+</body>
+</html>

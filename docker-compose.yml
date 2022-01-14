@@ -1,0 +1,92 @@
+version: '3'
+
+services:
+
+  scooterdb:
+    image: postgres
+    container_name: scooter_db
+    env_file: 
+      - configs/.env
+    volumes:
+      #- ./configs:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scooteradmin -d scooterdb"]  
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+    networks:
+      - scooternet
+    ports:
+      - "5444:5432"
+
+#  zookeeper:
+#    image: bitnami/zookeeper:latest
+#    container_name: scooter_zookeper
+#    ports:
+#      - "2181:2181"
+#    environment:
+#      - ALLOW_ANONYMOUS_LOGIN=yes
+#    networks:
+#      - scooternet
+#
+#  kafka:
+#    image: bitnami/kafka:3.0.0
+#    container_name: scooter_kafka
+#    ports:
+#      - "9093:9093"
+#    environment:
+#      - KAFKA_BROKER_ID=1
+#      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+#      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+#      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+#      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#    depends_on:
+#      - zookeeper
+#    networks:
+#      - scooternet
+
+  scooterapp:
+    container_name: scooter_app
+    build:
+      context: ../1/Dp-218_Go
+      dockerfile: Dockerfile
+    env_file:
+      - configs/.env
+    depends_on:
+      - scooterdb
+#      - kafka
+    networks:
+      - scooternet
+    ports:
+      - "8080:8080"
+
+  problemservice:
+    container_name: problemservice
+    build:
+      context: ../1/Dp-218_Go
+      dockerfile: microservice/docker/Dockerfile.problem
+    env_file:
+      - configs/.env
+    depends_on:
+      - scooterdb
+    networks:
+      - scooternet
+    ports:
+      - "4444:4444"
+
+networks:
+  scooternet:
+    driver: bridge  
+
+volumes:
+  dbdata:

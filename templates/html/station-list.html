@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="/templates/img/favicon.png">
+    <title>Station list</title>
+</head>
+<body>
+<header>
+    <div class="bs-component">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+             style="background-color:#545454FF !important; padding: 1em !important;">
+            <i class="fas fa-bicycle fa-2x"></i>
+            &nbsp;
+            <b><a class="navbar-brand" href="/">Dnepr Scooters</a></b>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <!--                        <a class="nav-link" href="/home">Back to profile</a>-->
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" method="get" action="/stations">
+                    <input class="form-control mr-sm-2" type="text" name="SearchData" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search scooter station</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<h1>List of scooter stations</h1>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <td>Latitude</td>
+            <td>Longitude</td>
+            <th>Status</th>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {{range .Station}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Latitude}}</td>
+            <td>{{.Longitude}}</td>
+            <td>{{if .IsActive}}<span class="badge badge-success">Active</span>{{else}}<span
+                    class="badge badge-danger">Blocked</span>{{end}}
+            </td>
+            <td>{{.Name}}</td>
+            <td>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/station/{{.ID}}'">Edit
+                </button>
+            </td>
+            <td>
+                {{if .IsActive}}
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal{{.ID}}">
+                    BLOCK
+                </button>
+                {{else}}
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal{{.ID}}">UNBLOCK
+                </button>
+                {{end}}
+            </td>
+        </tr>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal{{.ID}}" data-backdrop="static" data-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Station blocking</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{if .IsActive}}
+                    <div class="modal-body"> Sure, you want to BLOCK station?</div>
+                    {{else}}
+                    <div class="modal-body"> Sure, you want to UNBLOCK station?</div>
+                    {{end}}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, dismiss</button>
+                        <form class="form-inline" method="post" action="/stations">
+                            <input type="hidden" value="BlockStation" name="ActionType">
+                            <input type="hidden" value="{{.ID}}" name="stationID">
+                            <button type="submit" class="btn btn-primary">Yes, confirm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{end}}
+
+        </tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+            crossorigin="anonymous"></script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+</body>
+</html>

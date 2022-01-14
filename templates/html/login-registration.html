@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Registration</title>
+  <link rel="icon" type="image/png" href="/templates/img/favicon.png">
+  <link href="/templates/css/login-registration.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+<body>
+<header>
+  <div class="bs-component">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+         style="background-color:#545454FF !important; padding: 1em !important;">
+      <i class="fas fa-bicycle fa-2x"></i>&nbsp;
+      <b><a class="navbar-brand" href="/">Dnepr Scooters</a></b>
+    </nav>
+  </div>
+</header>
+
+<div id="app"></div>
+<div class="container" id="container">
+  <div class="form-container sign-up-container">
+    <form action="/signup" method="post">
+      <h1>Create Account</h1>
+      <span>Use your email for registration</span>
+      <input type="text" placeholder="Name" name="name"/>
+      <input type="text" placeholder="Surname" name="surname"/>
+      <input type="email" placeholder="Email" name="email"/>
+      <input id="password"  type="password" placeholder="Password" name="password"/>
+      <input id="confirm_password" type="password" placeholder="Confirm Password" />
+      <button>Sign Up</button>
+    </form>
+  </div>
+  <div class="form-container sign-in-container">
+    <form action="/signin" method="post">
+      <h1>Sign in</h1>
+      <span>Use your account</span>
+      <input type="email" placeholder="Email" name="email"/>
+      <input  type="password" placeholder="Password" name="password" />
+      <a href="#">Forgot your password?</a>
+      <button>Sign In</button>
+    </form>
+  </div>
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back!</h1>
+        <p>Login with your personal info</p>
+        <button class="ghost" id="signIn">Sign In</button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>Hello!</h1>
+        <p>To sign up, enter your personal details</p>
+        <button class="ghost" id="signUp">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/templates/js/login-registration.js"></script>
+</body>
+</html>
