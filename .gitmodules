@@ -1,3 +1,6 @@
 [submodule "microservice/ProblemMicro"]
 	path = microservice/ProblemMicro
-	url = git@github.com:DmytroTHR/ProblemMicro.git
+	url = https://github.com/DmytroTHR/ProblemMicro.git
+[submodule "microservice/SupplierMicro"]
+	path = microservice/SupplierMicro
+	url = git@github.com:goRoman1/SupplierMicro.git
