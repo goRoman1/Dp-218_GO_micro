@@ -58,7 +58,7 @@ services:
   scooterapp:
     container_name: scooter_app
     build:
-      context: ../1/Dp-218_Go
+      context: ../Dp-218_GO_micro
       dockerfile: Dockerfile
     env_file:
       - configs/.env
@@ -73,7 +73,7 @@ services:
   problemservice:
     container_name: problemservice
     build:
-      context: ../1/Dp-218_Go
+      context: ../Dp-218_GO_micro
       dockerfile: microservice/docker/Dockerfile.problem
     env_file:
       - configs/.env
@@ -84,6 +84,19 @@ services:
     ports:
       - "4444:4444"
 
+  suppliermicroservice:
+    container_name: suppliermicroservice
+    build:
+      context: ../Dp-218_GO_micro
+      dockerfile: microservice/docker/Dockerfile.suppliermicro
+    env_file:
+      - configs/.env
+    depends_on:
+      - scooterdb
+    networks:
+      - scooternet
+    ports:
+      - "5555:5555"
 networks:
   scooternet:
     driver: bridge  
