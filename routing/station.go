@@ -1,12 +1,12 @@
 package routing
 
 import (
-	"Dp-218_GO_micro/models"
+	"Dp218GO/models"
 	"fmt"
 	"net/http"
 	"strconv"
 
-	"Dp-218_GO_micro/services"
+	"Dp218GO/services"
 	"github.com/gorilla/mux"
 )
 

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"Dp-218_GO_micro/models"
-	"Dp-218_GO_micro/repositories"
+	"Dp218GO/models"
+	"Dp218GO/repositories"
 )
 
 //OrderService is the service which gives access to the OrderRepo repository.

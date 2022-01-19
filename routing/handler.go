@@ -1,7 +1,7 @@
 package routing
 
 import (
-	"Dp-218_GO_micro/configs"
+	"Dp218GO/configs"
 	"encoding/json"
 	"fmt"
 	"html/template"

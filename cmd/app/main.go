@@ -1,14 +1,15 @@
 package main
 
 import (
-	"Dp-218_GO_micro/configs"
-	"Dp-218_GO_micro/protos"
-	"Dp-218_GO_micro/repositories/postgres"
-	"Dp-218_GO_micro/routing"
-	"Dp-218_GO_micro/routing/grpcserver"
-	"Dp-218_GO_micro/routing/httpserver"
-	"Dp-218_GO_micro/services"
+	"Dp218GO/configs"
+	"Dp218GO/protos"
+	"Dp218GO/repositories/postgres"
+	"Dp218GO/routing"
+	"Dp218GO/routing/grpcserver"
+	"Dp218GO/routing/httpserver"
+	"Dp218GO/services"
 	"fmt"
+	"github.com/golang-migrate/migrate/v4"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
@@ -83,20 +84,17 @@ func main() {
 	custService := services.NewCustomerService(stationRepoDB)
 
 	/////////////////
-	/*
-		supplierMicroGRPCServer := net.JoinHostPort(configs.SUPPLIER_MICRO_SERVICE, configs.SUPPLIER_MICRO_GRPC_PORT)
-		supplierMicroCred, err := credentials.NewClientTLSFromFile(configs.SUPPLIER_MICRO_CERTIFICATE, "")
-		if err != nil {
-			log.Panicf("%s: unable to get TLS certificate - %v", supplierMicroGRPCServer, err)
-		}
-		supplierMicroConnection, err := grpc.Dial(supplierMicroGRPCServer, grpc.WithTransportCredentials(supplierMicroCred))
-		if err != nil {
-			log.Panicf("%s: unable to set grpc connection - %v", supplierMicroGRPCServer, err)
-		}
-		defer supplierMicroConnection.Close()
-		var supplierMicroService = services.NewSupplierMicroService(supplierMicroConnection, userService)
-
-	*/
+	supplierMicroGRPCServer := net.JoinHostPort(configs.SUPPLIER_MICRO_SERVICE, configs.SUPPLIER_MICRO_GRPC_PORT)
+	supplierMicroCred, err := credentials.NewClientTLSFromFile(configs.SUPPLIER_MICRO_CERTIFICATE, "")
+	if err != nil {
+		log.Panicf("%s: unable to get TLS certificate - %v", supplierMicroGRPCServer, err)
+	}
+	supplierMicroConnection, err := grpc.Dial(supplierMicroGRPCServer, grpc.WithTransportCredentials(supplierMicroCred))
+	if err != nil {
+		log.Panicf("%s: unable to set grpc connection - %v", supplierMicroGRPCServer, err)
+	}
+	defer supplierMicroConnection.Close()
+	var supplierMicroService = services.NewSupplierMicroService(supplierMicroConnection, userService)
 	/////////////////
 
 	handler := routing.NewRouter()
@@ -107,7 +105,7 @@ func main() {
 	routing.AddAccountHandler(handler, accService)
 	routing.AddScooterHandler(handler, scooterService)
 	routing.AddProblemHandler(handler, problemService)
-	//	routing.AddSupplierMicroHandler(handler, supplierMicroService)
+	routing.AddSupplierMicroHandler(handler, supplierMicroService)
 	routing.AddGrpcScooterHandler(handler, grpcScooterService)
 	routing.AddOrderHandler(handler, orderService)
 	routing.AddSupplierHandler(handler, supplierService)

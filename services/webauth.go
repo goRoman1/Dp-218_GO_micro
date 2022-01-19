@@ -1,9 +1,9 @@
 package services
 
 import (
-	"Dp-218_GO_micro/models"
-	"Dp-218_GO_micro/repositories"
-	"Dp-218_GO_micro/utils"
+	"Dp218GO/models"
+	"Dp218GO/repositories"
+	"Dp218GO/utils"
 	"encoding/gob"
 	"fmt"
 	"net/http"

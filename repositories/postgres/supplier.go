@@ -1,8 +1,8 @@
 package postgres
 
 import (
-	"Dp-218_GO_micro/models"
-	"Dp-218_GO_micro/repositories"
+	"Dp218GO/models"
+	"Dp218GO/repositories"
 	"context"
 	"encoding/csv"
 	"fmt"

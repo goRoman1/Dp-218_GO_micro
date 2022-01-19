@@ -1,8 +1,8 @@
 package services
 
 import (
-	"Dp-218_GO_micro/models"
-	"Dp-218_GO_micro/services/mock"
+	"Dp218GO/models"
+	"Dp218GO/services/mock"
 	"errors"
 	"github.com/golang/mock/gomock"
 	assert "github.com/stretchr/testify/require"

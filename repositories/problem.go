@@ -2,7 +2,7 @@
 package repositories
 
 import (
-	"Dp-218_GO_micro/models"
+	"Dp218GO/models"
 	"time"
 )
 

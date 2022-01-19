@@ -1,7 +1,7 @@
 //go:generate mockgen -source=scooter.go -destination=../repositories/mock/mock_scooter.go -package=mock
 package repositories
 
-import "Dp-218_GO_micro/models"
+import "Dp218GO/models"
 
 //ScooterRepo the interface which implemented by functions which connect to the database.
 type ScooterRepo interface {

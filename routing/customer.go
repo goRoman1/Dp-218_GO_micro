@@ -1,9 +1,9 @@
 package routing
 
 import (
-	"Dp-218_GO_micro/internal/validation"
-	"Dp-218_GO_micro/models"
-	"Dp-218_GO_micro/services"
+	"Dp218GO/internal/validation"
+	"Dp218GO/models"
+	"Dp218GO/services"
 	"encoding/json"
 	"errors"
 	"net/http"

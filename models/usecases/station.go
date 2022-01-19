@@ -1,6 +1,6 @@
 package usecases
 
-import "Dp-218_GO_micro/models"
+import "Dp218GO/models"
 
 type StationUsecasesRepo interface {
 	GetAllStations() (*models.StationList, error)

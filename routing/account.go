@@ -1,10 +1,10 @@
 package routing
 
 import (
-	"Dp-218_GO_micro/internal/validation"
-	"Dp-218_GO_micro/models"
-	"Dp-218_GO_micro/services"
-	"Dp-218_GO_micro/utils"
+	"Dp218GO/internal/validation"
+	"Dp218GO/models"
+	"Dp218GO/services"
+	"Dp218GO/utils"
 	"errors"
 	"html/template"
 	"net/http"

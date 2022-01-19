@@ -1,8 +1,8 @@
 package routing
 
 import (
-	"Dp-218_GO_micro/models"
-	"Dp-218_GO_micro/services"
+	"Dp218GO/models"
+	"Dp218GO/services"
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"

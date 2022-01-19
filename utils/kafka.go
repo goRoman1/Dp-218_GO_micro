@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"Dp-218_GO_micro/configs"
+	"Dp218GO/configs"
 	"context"
 	"fmt"
 	"github.com/Shopify/sarama"

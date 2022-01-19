@@ -1,10 +1,10 @@
 package services
 
 import (
-	"Dp-218_GO_micro/models"
-	proto2 "ProblemMicro/proto"
+	"Dp218GO/models"
 	"context"
 	"google.golang.org/grpc"
+	proto2 "problem.micro/proto"
 	"time"
 )
 

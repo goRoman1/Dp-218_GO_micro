@@ -11,3 +11,10 @@ type Station struct {
 type StationList struct {
 	Station []Station `json:"station"`
 }
+
+type Location struct {
+	ID        int     `json:"id"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	Label     string  `json:"label"`
+}

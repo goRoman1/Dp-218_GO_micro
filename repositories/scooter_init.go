@@ -2,7 +2,7 @@
 
 package repositories
 
-import "Dp-218_GO_micro/models"
+import "Dp218GO/models"
 
 // ScooterInitRepoI - interface for adding scooters to stations
 type ScooterInitRepoI interface {

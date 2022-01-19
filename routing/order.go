@@ -1,7 +1,7 @@
 package routing
 
 import (
-	"Dp-218_GO_micro/services"
+	"Dp218GO/services"
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"

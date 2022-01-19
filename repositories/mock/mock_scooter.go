@@ -5,7 +5,7 @@
 package mock
 
 import (
-	models "Dp-218_GO_micro/models"
+	models "Dp218GO/models"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"

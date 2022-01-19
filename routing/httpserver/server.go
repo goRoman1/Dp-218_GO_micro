@@ -1,7 +1,7 @@
 package httpserver
 
 import (
-	"Dp-218_GO_micro/protos"
+	"Dp218GO/protos"
 	"bytes"
 	"context"
 	"encoding/json"
