@@ -17,7 +17,7 @@ var keyRoutesStation = []Route{
 	{
 		Uri:     `/stations`,
 		Method:  http.MethodGet,
-		Handler: getAllStations,
+		Handler: GetAllStations,
 	},
 	{
 		Uri:     `/station/{` + stationIDKey + `}`,
@@ -68,7 +68,7 @@ func createStation(w http.ResponseWriter, r *http.Request) {
 	EncodeAnswer(format, w, station)
 }
 
-func getAllStations(w http.ResponseWriter, r *http.Request) {
+func GetAllStations(w http.ResponseWriter, r *http.Request) {
 	var station = &models.StationList{}
 	var err error
 	format := GetFormatFromRequest(r)
@@ -139,7 +139,7 @@ func allStationsOperation(w http.ResponseWriter, r *http.Request) {
 	default:
 		EncodeError(format, w, ErrorRendererDefault(fmt.Errorf("unknown users operation")))
 	}
-	getAllStations(w, r)
+	GetAllStations(w, r)
 }
 
 func UpdateStation(w http.ResponseWriter, r *http.Request) {

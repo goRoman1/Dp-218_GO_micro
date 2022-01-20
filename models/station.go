@@ -18,3 +18,12 @@ type Location struct {
 	Longitude float64 `json:"longitude"`
 	Label     string  `json:"label"`
 }
+
+type LocationList struct {
+	Location []Location `json:"location"`
+}
+
+type StationLocation struct {
+	StationList  []Station  `json:"station_list"`
+	LocationList []Location `json:"location_list"`
+}
