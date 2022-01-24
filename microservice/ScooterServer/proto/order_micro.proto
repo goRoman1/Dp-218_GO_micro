@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+option go_package = "./;proto";
+
+message Order {
+  uint64 id = 1;
+  uint64 userID = 2;
+  uint64 scooterID = 3;
+  uint64 statusStartID = 4;
+  uint64 statusEndID = 5;
+  double distance = 6;
+  repeated uint64 amount = 7;
+}
+
+message TripInfo {
+  uint64 userID = 1;
+  uint64 scooterID = 2;
+  uint64 statusStartID = 3;
+  uint64 statusEndID = 4;
+}
+
+service OrderService {
+  rpc CreateOrder(TripInfo) returns (Order) {};
+}

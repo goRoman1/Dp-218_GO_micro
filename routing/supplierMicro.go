@@ -14,6 +14,10 @@ var keySupplierMicroRoutes = []Route{
 		Uri:     `/render`,
 		Method:  http.MethodGet,
 		Handler: getTemplateData,
+	}, {
+		Uri:     `/locations`,
+		Method:  http.MethodGet,
+		Handler: getLocations,
 	},
 	{
 		Uri:     `/addStation`,
@@ -41,24 +45,27 @@ func AddSupplierMicroHandler(router *mux.Router, supserv *services.SupplierMicro
 
 func getTemplateData(w http.ResponseWriter, r *http.Request) {
 	var err error
-	//	var locationData models.Location
+	var locationData *models.LocationList
 	var stationsData models.StationList
 	format := GetFormatFromRequest(r)
-	/*	locationData, err = supplierMicroService.GetAllLocations()
-		if err != nil {
-			ServerErrorRender(format, w)
-			return
-		}
-	*/
-
-	stationsData, err = supplierMicroService.GetAllLStations()
+	locationData, err = supplierMicroService.GetAllLocations()
 	if err != nil {
 		ServerErrorRender(format, w)
 		return
 	}
 
-	//	EncodeAnswer(format, w, locationData, HTMLPath+"supplierMicro.html")
-	EncodeAnswer(format, w, stationsData, HTMLPath+"supplierMicro.html")
+	stationsData, err = supplierMicroService.GetAllLStations()
+	if err != nil {
+		EncodeError(FormatHTML, w, ErrorRendererDefault(err))
+		return
+	}
+
+	problemWithAllTypes := struct {
+		locationList *models.LocationList
+		stationList  models.StationList
+	}{locationData, stationsData}
+
+	EncodeAnswer(FormatHTML, w, problemWithAllTypes, HTMLPath+"supplierMicro.html")
 }
 
 func addStationInLocation(w http.ResponseWriter, r *http.Request) {
@@ -85,18 +92,22 @@ func addStation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if format == FormatHTML {
+		getTemplateData(w, r)
+		return
+	}
 	EncodeAnswer(FormatJSON, w, stationData)
 }
 
 func getLocations(w http.ResponseWriter, r *http.Request) {
-	format := GetFormatFromRequest(r)
-	var locationData models.LocationList
+	//	format := GetFormatFromRequest(r)
+	var locationData *models.LocationList
 
 	locationData, err := supplierMicroService.GetAllLocations()
 	if err != nil {
-		ServerErrorRender(format, w)
+		EncodeError(FormatHTML, w, ErrorRendererDefault(err))
 		return
 	}
 
-	EncodeAnswer(FormatJSON, w, locationData)
+	EncodeAnswer(FormatHTML, w, locationData, HTMLPath+"supplierMicro.html")
 }

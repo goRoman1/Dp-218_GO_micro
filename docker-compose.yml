@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
 
@@ -82,7 +82,7 @@ services:
     networks:
       - scooternet
     ports:
-      - "4444:4444"
+      - "3333:3333"
 
   suppliermicroservice:
     container_name: suppliermicroservice
@@ -96,7 +96,47 @@ services:
     networks:
       - scooternet
     ports:
-      - "5555:5555"
+      - "4444:4444"
+
+  scooter_server:
+    container_name: scooter_server
+    build:
+      context: ../Dp-218_GO_micro
+      dockerfile: microservice/docker/Dockerfile.scooterserver
+    ports:
+      - "9000:9000"
+      - "8085:8085"
+    env_file:
+      - configs/.env
+    networks:
+      - scooternet
+
+  scooter_client:
+    build:
+      context: ../Dp-218_GO_micro
+      dockerfile: microservice/docker/Dockerfile.scooterclient
+    depends_on:
+      - "scooter_server"
+    ports:
+      - "5000"
+    env_file:
+      - configs/.env
+    networks:
+      - scooternet
+      -
+  order_service:
+    build:
+      context: ../Dp-218_GO_micro
+      dockerfile: microservice/docker/Dockerfile.orderservice
+    depends_on:
+      - "scooter_server"
+    ports:
+      - "5050"
+    env_file:
+      - configs/.env
+    networks:
+      - scooternet
+
 networks:
   scooternet:
     driver: bridge  

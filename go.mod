@@ -6,6 +6,12 @@ replace problem.micro => ./microservice/ProblemMicro
 
 replace supplier.micro => ./microservice/SupplierMicro
 
+replace scooter_client.micro => ./microservice/ScooterClient
+
+replace order.micro => ./microservice/OrderService
+
+replace scooter_server.micro => ./microservice/ScooterServer
+
 require (
 	github.com/gorilla/sessions v1.2.1
 	golang.org/x/crypto v0.0.0-20211209193657-4570a0811e8b

@@ -25,37 +25,75 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/models">Go to models</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mStations">Add stations</a>
+                    </li>
                 </ul>
             </div>
         </nav>
     </div>
 </header>
 
+<h3>Add Station</h3>
+<div class="table-responsive">
+    <form method="post" action="/microAddStation">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <td>Latitude</td>
+                <td>Longitude</td>
+                <td>Select Locations</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <input type="text" name="stationName" placeholder=""/>
+                </td>
+                <td>
+                    <input type="number" name="latitude" placeholder="latitude"/>
+                </td>
+                <td>
+                    <input type="number" name="longitude" placeholder="longitude"/>
+                </td>                <td>
+                <select id="location_data" name="location_data"
+                        class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    {{range .LocationList.Location}}
+                    <option value="{{.ID}}" >{{.Label}}</option>
+                    {{end}}
+                </select>
+                </td>
+                <td>
+                    <input type="submit" value="Add station" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead>
         <tr>
-            <th>ID</th>
+            <th>Name</th>
             <td>Latitude</td>
             <td>Longitude</td>
-            <th>Status</th>
-            <th>Name</th>
-            <th></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
-
-        {{range .StationList.Stations}}
+        {{range .StationList.Station}}
         <tr>
-            <td>{{.ID}}</td>
+            <td>{{.Name}}</td>
             <td>{{.Latitude}}</td>
             <td>{{.Longitude}}</td>
         </tr>
         {{end}}
-
         </tbody>
     </table>
+
 </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

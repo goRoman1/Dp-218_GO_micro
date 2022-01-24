@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style>
+        label {
+            border-radius: 5px;
+            padding: 0 2rem;
+            background-color: ivory;
+            margin: 0.25rem;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+        }
+
+        input[type="radio"] {
+            visibility: hidden;
+            width: 0;
+        }
+
+        input[type="radio"]:checked + label {
+            background-color: yellowgreen;
+        }
+    </style>
+    <title>Scooter service</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
+    <script type="text/javascript">
+        let map;
+
+        let eventSource = new EventSource("/scooter");
+        let scooters = new Map();
+
+
+        DG.then(function () {
+            map = DG.map('map', {
+                center: [48.4223, 35.0234],
+                zoom: 13
+            });
+        });
+
+        eventSource.onopen = function (e) {
+            console.log("connection: open");
+        };
+
+        eventSource.onerror = function (e) {
+            console.log("connection: error");
+            if (this.readyState == EventSource.CONNECTING) {
+                console.log(`reconnectin=${this.readyState})...`);
+            } else {
+                console.log("error occured");
+            }
+        };
+
+        eventSource.onmessage = function (e) {
+            json = JSON.parse(e.data);
+            console.log(scooters.has(json.id));
+
+            if (scooters.has(json.id) != true) {
+                console.log("no id");
+                let scr = DG.marker([json.longitude, json.latitude]).addTo(map);
+                scooters.set(json.id, scr);
+            }
+            let scr = scooters.get(json.id);
+
+            scr.setLatLng({lat: json.latitude, lng: json.longitude});
+            console.log(scr.getLatLng());
+        };
+
+        $(document).ready(function () {
+            $(".choose_scooter").click(function () {
+                var data = $(this).val();
+                $.post("/choose-scooter", {id: data});
+                console.log(data)
+            });
+        });
+
+        $(document).ready(function () {
+            $(".choose_station").click(function () {
+                var data = $(this).val();
+                $.post("/choose-station", {id: data});
+                console.log(data)
+            });
+        });
+    </script>
+</head>
+
+<body style="background: radial-gradient(circle at top left, #e1d767, #d3f6da)">
+    <header id="header">
+        <div class="header-bar">
+            <nav class="navbar navbar-expand-sm  navbar-dark bg-dark"
+                 style="background-color:#545454FF !important; padding: 1em !important;">
+                <a class="navbar-brand" href="main-page.html" style="padding:0 30px">
+                    <i class="fas fa-bicycle fa-1x"></i>
+                    <b> Dnepr Scooters</b></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggleMenu"
+                        aria-controls="toggleMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="toggleMenu">
+                    <ul class="navbar-nav ms-auto text-center" style="padding:0 30px">
+                        <li class="nav-item"><a class="nav-link" href="/customer/map">Back</a></li>
+
+                        <li class="nav-item"><a class="nav-link" id="logout" href="/signout">
+                            <i class="fas fa-user"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="row">
+        <div id="map" style="width:60%; height:100vh"></div>
+        <div class="col-sm-4">
+            <div class="bs-component">
+                <fieldset class="scoot_check">
+                    <div class="list-group" name="Scoot_list">
+                        <div class="list-group-item list-group-item-action active" style="background:
+                        radial-gradient(#edf1cf, #43acb4); border: none" name="ScooterList">
+                            Scooters at the station
+                        </div>
+                        {{range .Scooters}}
+                        <input  type="radio" name="scoot"
+                               class="choose_scooter" value="{{.Id}}" id="{{.Id}}"
+                        ><label style="border: 1px solid black" for="{{.Id}}"><b>ID: {{.Id}} </b>, "{{.ScooterModel}}",
+                        <b>Battery:{{
+                        .BatteryRemain}}%</b></label>
+                        {{end}}
+                    </div>
+                </fieldset>
+                <fieldset class="station_check">
+                    <div class="list-group" style="margin-top: 20px">
+                        <div class="list-group-item list-group-item-action active" style="background:
+                        radial-gradient(#edf1cf, #43acb4); border: none">
+                            Where we go?
+                        </div>
+                        {{range .Stations}}
+                        <input  type="radio" name="station"
+                                class="choose_station" value="{{.Id}}" id="{{.Id}}+500"
+                        ><label for="{{.Id}}+500" style="border: 1px solid black">- {{.Name}}</label>
+                        {{end}}
+                    </div>
+                </fieldset>
+            </div>
+            <p class="bs-component"style="margin-top: 20px">
+                <button type="submit" class="btn btn-primary btn-lg" id="run"
+                        style="background-color: teal" name="Run" onclick="fetch('http://localhost:8085/run')">Start
+                    ride
+                </button>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

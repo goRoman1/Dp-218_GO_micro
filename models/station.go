@@ -24,6 +24,6 @@ type LocationList struct {
 }
 
 type StationLocation struct {
-	StationList  []Station  `json:"station_list"`
-	LocationList []Location `json:"location_list"`
+	StationList  StationList  `json:"station_list"`
+	LocationList LocationList `json:"location_list"`
 }

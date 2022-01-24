@@ -1,0 +1,101 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+package proto;
+option go_package = "./;proto";
+
+
+service ScooterService {
+  rpc Register(stream ClientMessage) returns (stream ScooterClient) {};
+  rpc Receive(stream ClientMessage) returns (ServerMessage) {};
+  rpc GetAllScooters(Request) returns (ScooterList) {};
+  rpc GetAllScootersByStationID(StationID) returns (ScooterList) {};
+  rpc GetScooterById(ScooterID) returns (Scooter) {};
+  rpc GetScooterStatus(ScooterID) returns (ScooterStatus) {};
+  rpc SendCurrentStatus(SendStatus) returns (Response) {};
+  rpc CreateScooterStatusInRent(ScooterID) returns (ScooterStatusInRent) {};
+  rpc GetStationByID(StationID) returns (Station) {};
+  rpc GetAllStations(Request) returns (StationList) {};
+}
+
+message Request {}
+
+message Response {}
+
+message Station {
+  uint64 id = 1;
+  string name = 2;
+  bool isActive = 3;
+  double latitude = 4;
+  double longitude = 5;
+}
+
+message StationList {
+  repeated Station stations = 1;
+}
+
+message Scooter {
+  uint64 id = 1;
+  string scooterModel = 2;
+  double maxWeight = 3;
+  double batteryRemain = 4;
+  bool canBeRent = 5;
+}
+
+message ScooterClient {
+  uint64 id = 1;
+  double latitude = 2;
+  double longitude = 3;
+  double batteryRemain = 4;
+  double destLatitude = 5;
+  double destLongitude = 6;
+}
+
+message ScooterList {
+  repeated Scooter scooters = 1;
+}
+
+message ScooterID {
+  uint64 id = 1;
+}
+
+message StationID {
+  uint64 id = 1;
+}
+
+message ScooterStatus {
+  double latitude = 1;
+  double longitude = 2;
+  double batteryRemain = 3;
+  StationID stationID = 4;
+}
+
+message SendStatus {
+  uint64 scooterID = 1;
+  uint64 stationID = 2;
+  double latitude = 3;
+  double longitude = 4;
+  double batteryRemain = 5;
+}
+
+message ScooterStatusInRent {
+  uint64 id = 1;
+  uint64 scooterID = 2;
+  uint64 stationID = 3;
+  google.protobuf.Timestamp dateTime = 4;
+  double latitude = 5;
+  double longitude = 6;
+}
+
+message ClientRequest {
+  uint64 id = 1;
+}
+
+message ClientMessage {
+  uint64 id = 1;
+  double longitude = 2;
+  double latitude = 3;
+}
+
+message ServerMessage {
+  uint32 code = 1;
+}

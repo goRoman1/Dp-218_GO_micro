@@ -78,12 +78,14 @@ func main() {
 	var scootersInitRepoDb = postgres.NewScooterInitRepoDB(db)
 	var scootersInitService = services.NewScooterInitService(scootersInitRepoDb)
 
+	var supMicroRepoDb = postgres.NewSupMicroRepoDB(db)
+	var supMicroService = services.NewSupMicroService(supMicroRepoDb)
+
 	sessStore := sessions.NewCookieStore([]byte(configs.SESSION_SECRET))
 	authService := services.NewAuthService(userRoleRepoDB, sessStore)
 
 	custService := services.NewCustomerService(stationRepoDB)
 
-	/////////////////
 	supplierMicroGRPCServer := net.JoinHostPort(configs.SUPPLIER_MICRO_SERVICE, configs.SUPPLIER_MICRO_GRPC_PORT)
 	supplierMicroCred, err := credentials.NewClientTLSFromFile(configs.SUPPLIER_MICRO_CERTIFICATE, "")
 	if err != nil {
@@ -94,8 +96,7 @@ func main() {
 		log.Panicf("%s: unable to set grpc connection - %v", supplierMicroGRPCServer, err)
 	}
 	defer supplierMicroConnection.Close()
-	var supplierMicroService = services.NewSupplierMicroService(supplierMicroConnection, userService)
-	/////////////////
+	var supplierMicroService = services.NewSupplierMicroService(supplierMicroConnection)
 
 	handler := routing.NewRouter()
 	routing.AddAuthHandler(handler, authService)
@@ -110,6 +111,7 @@ func main() {
 	routing.AddOrderHandler(handler, orderService)
 	routing.AddSupplierHandler(handler, supplierService)
 	routing.AddScooterInitHandler(handler, scootersInitService)
+	routing.AddSupMicroHandler(handler, supMicroService)
 	httpServer := httpserver.New(handler, httpserver.Port(configs.HTTP_PORT))
 	handler.HandleFunc("/scooter", httpServer.ScooterHandler)
 

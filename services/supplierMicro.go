@@ -10,14 +10,12 @@ import (
 // SupplierMicroService - structure for implementing user problem service
 type SupplierMicroService struct {
 	microservice proto.SupplierMicroServiceClient
-	userService  *UserService
 }
 
 // NewSupplierMicroService - initialization of ProblemService
-func NewSupplierMicroService(grpcConn grpc.ClientConnInterface, userServ *UserService) *SupplierMicroService {
+func NewSupplierMicroService(grpcConn grpc.ClientConnInterface) *SupplierMicroService {
 	return &SupplierMicroService{
 		microservice: proto.NewSupplierMicroServiceClient(grpcConn),
-		userService:  userServ,
 	}
 }
 
@@ -62,10 +60,10 @@ func (supserv *SupplierMicroService) GetAllLStations() (models.StationList, erro
 	return stationList, err
 }
 
-func (supserv *SupplierMicroService) GetAllLocations() (models.LocationList, error) {
+func (supserv *SupplierMicroService) GetAllLocations() (*models.LocationList, error) {
 	request := &proto.Request{}
 	response, err := supserv.microservice.GetLocations(context.Background(), request)
-	var locationList models.LocationList
+	var locationList *models.LocationList
 	if err != nil {
 		return locationList, err
 	}

@@ -3,7 +3,6 @@ package routing
 import (
 	"Dp218GO/models"
 	"Dp218GO/services"
-	"Dp218GO/utils"
 	"fmt"
 	"github.com/gorilla/mux"
 	"io"
@@ -72,8 +71,11 @@ func getModels(w http.ResponseWriter, r *http.Request) {
 	var err error
 	format := GetFormatFromRequest(r)
 
-	r.ParseForm()
-
+	err = r.ParseForm()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	modelList, err = supplierService.GetModels()
 	if err != nil {
 		ServerErrorRender(format, w)
@@ -222,45 +224,4 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	supplierService.InsertScootersToDb(modelId, filepath)
 
 	http.Redirect(w, r, "http://localhost:8080/models", http.StatusFound)
-}
-
-func scooterModelRequest(r *http.Request, data interface{}) error {
-	modelData := data.(*models.ScooterModelDTO)
-
-	modelName, err := GetParameterFromRequest(r, "modelName", utils.ConvertStringToString())
-	if err != nil {
-		return err
-	}
-	modelData.ModelName = modelName.(string)
-
-	maxWeight, err := GetParameterFromRequest(r, "maxWeight", utils.ConvertStringToInt())
-	if err != nil {
-		return err
-	}
-	modelData.MaxWeight = maxWeight.(int)
-
-	speed, err := GetParameterFromRequest(r, "speed", utils.ConvertStringToInt())
-	if err != nil {
-		return err
-	}
-	modelData.Speed = speed.(int)
-
-	price, err := GetParameterFromRequest(r, "price", utils.ConvertStringToInt())
-	if err != nil {
-		return err
-	}
-	modelData.Price = price.(int)
-
-	return nil
-}
-
-func scooterRequest(r *http.Request, data interface{}) error {
-	scooterData := data.(*models.SuppliersScooter)
-	serial, err := GetParameterFromRequest(r, "serial", utils.ConvertStringToString())
-	if err != nil {
-		return err
-	}
-	scooterData.SerialNumber = serial.(string)
-
-	return nil
 }

@@ -12,9 +12,7 @@ type SupplierService struct {
 
 // NewSupplierService - initialization of SupplierService
 func NewSupplierService(SupplierRepo repositories.SupplierRepoI) *SupplierService {
-	return &SupplierService{
-		SupplierRepo: SupplierRepo,
-	}
+	return &SupplierService{SupplierRepo}
 }
 
 //AddSuppliersScooter - adds suppliers scooter to scooter model
